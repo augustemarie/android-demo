@@ -7,278 +7,149 @@ import android. widget. TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
-public class CalculatriceActivity extends AppCompatActivity {
-    Button button0;
-    Button button1;
-    Button button2;
-    Button button3;
-    Button button4;
-    Button button5;
-    Button button6;
-    Button button7;
-    Button button8;
-    Button button9;
-    Button buttonPlus;
-    Button buttonMoins;
-    Button buttonDiv;
-    Button buttonMul;
-    Button buttonAC;
-    Button buttonEgal;
-    Button buttonPoint;
-    TextView ecran;
-    private double chiffre1;
-    private boolean clicOperateur = false;
-    private boolean update = false;
-    private String operateur = "";
-
+public class calculator extends AppCompatActivity implements
+        View.OnClickListener{
+    private double val1 = 0;
+    private double val2 = 0;
+    private String operation = "";
+    private boolean isOp1 = true;
+    private boolean dec = false;
+    private boolean cal = false;
+    private double dec1 = 0.0;
+    private double dec2 = 0.0;
+    private double resultat;
+    private TextView ecran;
+    private Button btnClear;
+    private Button btnEgal;
+    private Button btn8, btn5;
+    private View.OnClickListener ajouterChiffreListener;
+    private calcul calc;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculatrice);
-
-        button0 = (Button) findViewById(R.id.button0);
-        button1 = (Button) findViewById(R.id.button1);
-        button2 = (Button) findViewById(R.id.button2);
-        button3 = (Button) findViewById(R.id.button3);
-        button4 = (Button) findViewById(R.id.button4);
-        button5 = (Button) findViewById(R.id.button5);
-        button6 = (Button) findViewById(R.id.button6);
-        button7 = (Button) findViewById(R.id.button7);
-        button8 = (Button) findViewById(R.id.button8);
-        button9 = (Button) findViewById(R.id.button9);
-        buttonPoint = (Button) findViewById(R.id.buttonPoint);
-        buttonPlus = (Button) findViewById(R.id.buttonPlus);
-        buttonMoins = (Button) findViewById(R.id.buttonMoins);
-        buttonDiv = (Button) findViewById(R.id.buttonDivision);
-        buttonMul = (Button) findViewById(R.id.buttonMultiplier);
-        buttonAC = (Button) findViewById(R.id.buttonAC);
-        buttonEgal = (Button) findViewById(R.id.buttonEgal);
-
-        ecran = (TextView) findViewById(R.id.display);
-
-
-                //on attribue un ecouteur d'evenements
-                //quand on clique sur les operateurs
-
-                buttonPlus.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        plusClick();
-                    }
-                });
-        buttonMoins.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                moinsClick();
+        View view = null;
+        calc = new calcul();
+        ecran = findViewById(R.id.screen);
+        //Methode 1
+        btnClear = findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calc.effacer();
             }
         });
-
-        buttonDiv.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                divClick();
+        //Methode 2
+        btnEgal = findViewById(R.id.btnEgal);
+        btnEgal.setOnClickListener(this);
+        //Methode 3
+        ajouterChiffreListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ajouterChiffre(view);
             }
-        });
 
-        buttonMul.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mulClick();
+            private void ajouterChiffre(View view) {
             }
-        });
-
-        buttonAC.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                resetClick();
+        };
+        btn5 = findViewById(R.id.btn5);
+        btn5.setOnClickListener(ajouterChiffreListener);
+        btn8 = findViewById(R.id.btn8);
+        btn8.setOnClickListener(ajouterChiffreListener);
+    }
+    private void afficher(){
+        if(!isOp1){ ecran.setText(String.valueOf(val1) +" "+operation+"
+                "+String.valueOf(val2)); }
+ else{
+                if(cal == true){
+                    ecran.setText( String.valueOf(resultat) );
+                }else{
+                    ecran.setText( String.valueOf(val1) );
+                }
             }
-        });
-
-        buttonEgal.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                egalClick();
+        }
+        public void setOperation(View v){
+            switch( v.getId() ){
+                case R.id.btnPlus : operation = "+"; break;
+                case R.id.btnMoins : operation = "-"; break;
+                case R.id.btnDiv : operation = "/"; break;
+                case R.id.btnFois : operation = "*"; break;
+                case R.id.btnMod : operation = "%"; break;
+                default:
+                    return; //Ne retourne rien
             }
-        });
-
-        //quand on clique sur les chiffres
-
-        buttonPoint.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick(".");
+            isOp1 = false;
+            afficher();
+        }
+        public void ajouterChiffre(View v){
+            int val = Integer.parseInt(((Button)v).getText().toString());
+            if(!isOp1){
+                val2 = val2 * 10 + val;
+                afficher();
+            }else {
+                val1 = val1 * 10 + val;
+                afficher();
             }
-        });
-
-        button0.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("0");
+        }
+        public void calculer(View Object view;
+        view){
+            if(!isOp1){
+                switch (operation){
+                    case "+" : resultat = this.calc.addition(val1,
+                            val2).toDouble(); break;
+                    case "-" : resultat = this.calc.soustration(val1,
+                            val2).toDouble(); break;
+                    case "*" : resultat = this.calc.multiplication(val1,
+                            val2).toDouble(); break;
+                    case "/" : resultat = this.calc.division(val1,
+                            val2).toDouble(); break;
+                    case "%" : resultat = this.calc.reste(val1,
+                            val2).toDouble(); break;
+                    default:
+                        return;
+                }
+                val2 = 0;
+                cal = true;
+                isOp1 = true;
+                afficher();
             }
-        });
-
-        button1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("1");
+        }
+        public void effacer(View view){
+            val1 = 0;
+            val2 = 0;
+            operation = "";
+            isOp1 = true;
+            resultat = 0;
+            cal = false;
+            this.calc.effacer();
+            afficher();
+        }
+        public void ValDecimal(View view){
+            if(dec == false){
+// if(isOp1){
+// dec1 = val1 * 10 + (double)(val1/10);
+// } else {
+// dec2 = val2 * 10 + (double)(val2/10);
+// }
             }
-        });
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("2");
-            }
-        });
-
-        button3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("3");
-            }
-        });
-
-        button4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("4");
-            }
-        });
-
-        button5.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("5");
-            }
-        });
-
-        button6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("6");
-            }
-        });
-
-        button7.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("7");
-            }
-        });
-
-        button8.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("8");
-            }
-        });
-
-        button9.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                chiffreClick("9");
-            }
-        });
+            dec = true;
+            afficher();
+        }
+        public void plusMoins(View view){
+            if(isOp1){
+                val1 = val1 * (-1);
+            }else{val2 = val2 * (-1);}
+            afficher();
+        }
+        @Override
+        public void onClick(View view) {
+            calculer(view);
+        }
     }
 
-    //voici la méthode qui est exécutée lorsqu’on clique sur un bouton chiffre
-    public void chiffreClick (String str) {
-        if(update){
-            update = false;
-        }else{
-            if(! ecran. getText (). equals ("0"))
-                str = ecran.getText() + str;
-        }
-        ecran. setText (str);
-    }
-
-    //voici la méthode qui est  exécutée lorsqu’on clique sur le bouton +
-    public void plusClick() {
-
-        if(clicOperateur){
-            calcul ();
-            ecran. setText (String.valueOf(chiffre1));
-        }else{
-            chiffre1 = Double.parseDouble(ecran.getText().toString());
-            clicOperateur = true;
-        }
-        operateur = "+";
-        update = true;
-    }
-
-    //voici la méthode qui est  exécutée lorsqu’on clique sur le bouton -
-    public void moinsClick() {
-        if(clicOperateur){
-            calcul ();
-            ecran.setText(String.valueOf (chiffre1));
-        }else{
-            chiffre1 = Double.parseDouble(ecran.getText().toString());
-            clicOperateur = true;
-        }
-        operateur = "-";
-        update = true;
-    }
-
-    //voici la méthode qui est  exécutée lorsqu’on clique sur le bouton *
-    public void mulClick() {
-        if(clicOperateur){
-            calcul ();
-            ecran.setText(String.valueOf (chiffre1));
-        }else{
-            chiffre1 = Double.parseDouble(ecran.getText().toString());
-            clicOperateur = true;
-        }
-        operateur = "x";
-        update = true;
-    }
-
-    //voici la méthode qui est  exécutée lorsqu’on clique sur le bouton /
-    public void divClick(){
-        if(clicOperateur){
-            calcul ();
-            ecran.setText(String.valueOf (chiffre1));
-        }else{
-            chiffre1 = Double.parseDouble(ecran.getText().toString());
-            clicOperateur = true;
-        }
-        operateur = "/";
-        update = true;
-    }
-
-    //voici la méthode qui est  exécutée lorsqu’on clique sur le bouton =
-    public void egalClick() {
-        calcul ();
-        update = true;
-        clicOperateur = false;
-    }
-
-    //voici la méthode qui est  exécutée lorsque l’on clique sur le bouton C
-    public void resetClick() {
-        clicOperateur = false;
-        update = true;
-        chiffre1 = 0;
-        operateur = "";
-        ecran. setText ("");
-    }
-
-    //Voici la méthode qui fait le calcul qui a été demandé par l’utilisateur
-    private void calcul () {
-        if (operateur.equals("+")) {
-            chiffre1 = chiffre1 + Double.parseDouble(ecran.getText().toString());
-            ecran.setText(String.valueOf(chiffre1));
-        }
-
-        if (operateur.equals("-")) {
-            chiffre1 = chiffre1 - Double.parseDouble(ecran.getText().toString());
-            ecran.setText(String.valueOf(chiffre1));
-        }
-
-        if (operateur.equals("*")) {
-            chiffre1 = chiffre1 * Double.parseDouble(ecran.getText().toString());
-            ecran.setText(String.valueOf(chiffre1));
-        }
-
-        if (operateur.equals("/")) {
-            try {
-                chiffre1 = chiffre1 / Double.parseDouble(ecran.getText().toString());
-                ecran.setText(String.valueOf(chiffre1));
-            } catch (ArithmeticException e) {
-                ecran.setText("0");
-            }
-        }
+    private void calculer(Object view) {
     }
 
 
 
-
-
-
-
-}
-
-
-
+    
